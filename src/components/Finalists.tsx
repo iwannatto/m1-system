@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Button, Form, Input, Space, Typography } from 'antd'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
@@ -6,11 +5,14 @@ const { Title } = Typography
 
 const DEFAULT_COUNT = 10
 
-function Finalists() {
-  const [, setSaved] = useState<string[]>([])
+type Props = {
+  onSave: (names: string[]) => void
+}
 
+function Finalists({ onSave }: Props) {
   const handleFinish = (values: { names: string[] }) => {
-    setSaved(values.names ?? [])
+    const names = (values.names ?? []).filter((name) => name.trim() !== '')
+    onSave(names)
   }
 
   return (
