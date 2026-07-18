@@ -5,9 +5,10 @@ const { Title, Text } = Typography
 
 type Props = {
   finalists: string[]
+  onDraw: (name: string) => void
 }
 
-function Emikuji({ finalists }: Props) {
+function Emikuji({ finalists, onDraw }: Props) {
   const [prevFinalists, setPrevFinalists] = useState(finalists)
   const [waiting, setWaiting] = useState(finalists)
   const [current, setCurrent] = useState<string | null>(null)
@@ -24,6 +25,7 @@ function Emikuji({ finalists }: Props) {
     const picked = waiting[index]
     setCurrent(picked)
     setWaiting((prev) => prev.filter((_, i) => i !== index))
+    onDraw(picked)
   }
 
   return (
