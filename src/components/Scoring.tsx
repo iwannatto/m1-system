@@ -1,12 +1,14 @@
-import { useState } from 'react'
 import { InputNumber, Table, Typography } from 'antd'
 import type { TableColumnsType } from 'antd'
+import { calcTotal, type ScoresMap } from '../utils/scoring'
 
 const { Title } = Typography
 
 type Props = {
   judges: string[]
   rows: string[]
+  scores: ScoresMap
+  onScoresChange: (scores: ScoresMap) => void
 }
 
 type ScoringRow = {
@@ -14,21 +16,16 @@ type ScoringRow = {
   name: string
 }
 
-function Scoring({ judges, rows }: Props) {
-  const [scores, setScores] = useState<Record<number, Record<number, number>>>({})
-
+function Scoring({ judges, rows, scores, onScoresChange }: Props) {
   const handleScoreChange = (rowIndex: number, judgeIndex: number, value: number | null) => {
-    setScores((prev) => ({
-      ...prev,
+    onScoresChange({
+      ...scores,
       [rowIndex]: {
-        ...prev[rowIndex],
+        ...scores[rowIndex],
         [judgeIndex]: value ?? 0,
       },
-    }))
+    })
   }
-
-  const rowTotal = (rowIndex: number) =>
-    Object.values(scores[rowIndex] ?? {}).reduce((sum, score) => sum + score, 0)
 
   const columns: TableColumnsType<ScoringRow> = [
     {
@@ -54,7 +51,7 @@ function Scoring({ judges, rows }: Props) {
     {
       title: '合計',
       key: 'total',
-      render: (_: unknown, record: ScoringRow) => rowTotal(record.key),
+      render: (_: unknown, record: ScoringRow) => calcTotal(scores, record.key),
     },
   ]
 
