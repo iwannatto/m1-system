@@ -3,13 +3,13 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
 const { Title } = Typography
 
-const DEFAULT_COUNT = 10
-
 type Props = {
+  heading: string
+  defaultCount: number
   onSave: (names: string[]) => void
 }
 
-function Finalists({ onSave }: Props) {
+function NameListForm({ heading, defaultCount, onSave }: Props) {
   const handleFinish = (values: { names: string[] }) => {
     const names = (values.names ?? []).filter((name) => name.trim() !== '')
     onSave(names)
@@ -17,10 +17,10 @@ function Finalists({ onSave }: Props) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Title level={2}>ファイナリスト</Title>
+      <Title level={2}>{heading}</Title>
       <Form
         onFinish={handleFinish}
-        initialValues={{ names: Array.from({ length: DEFAULT_COUNT }, () => '') }}
+        initialValues={{ names: Array.from({ length: defaultCount }, () => '') }}
       >
         <Form.List name="names">
           {(fields, { add, remove }) => (
@@ -51,4 +51,4 @@ function Finalists({ onSave }: Props) {
   )
 }
 
-export default Finalists
+export default NameListForm

@@ -1,14 +1,18 @@
 import { useState } from 'react'
-import Finalists from './components/Finalists'
+import NameListForm from './components/NameListForm'
 import Emikuji from './components/Emikuji'
 
 function App() {
   const [finalists, setFinalists] = useState<string[]>([])
+  const [, setJudges] = useState<string[]>([])
 
   return (
     <>
       <section id="finalists">
-        <Finalists onSave={setFinalists} />
+        <NameListForm heading="ファイナリスト" defaultCount={10} onSave={setFinalists} />
+      </section>
+      <section id="judges">
+        <NameListForm heading="審査員" defaultCount={3} onSave={setJudges} />
       </section>
       <section id="emikuji">
         <Emikuji finalists={finalists} />
